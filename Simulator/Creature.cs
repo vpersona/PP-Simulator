@@ -1,17 +1,17 @@
 ﻿namespace Simulator;
 
-public class Creature
+public abstract class Creature
 {
-    private string _name = "Unknown"; 
-    private int _level = 1;   
+    private string _name = "Unknown";
+    private int _level = 1;
     public string Name
     {
         get => _name;
         set
-        {          
-            value = value.Trim();          
+        {
+            value = value.Trim();
             value = value.Length < 3 ? value.PadRight(3, '#') : value;
-            value = value.Length > 25 ? value.Substring(0, 25).TrimEnd() : value;           
+            value = value.Length > 25 ? value.Substring(0, 25).TrimEnd() : value;
             value = char.IsLower(value[0]) ? char.ToUpper(value[0]) + value.Substring(1) : value;
             _name = value;
         }
@@ -25,26 +25,25 @@ public class Creature
 
 
 
-    public Creature(string name, int level = 1)
+    protected Creature(string name, int level = 1)
     {
         Name = name;
         Level = level;
     }
 
     public Creature() { }
-    public void SayHi()
-    {
-        Console.WriteLine($"Hi, my name is {Name} and my level is {Level}.");
-    }
+    public abstract void SayHi();
+    public abstract int Power { get; }
+   
 
- 
+
     public void Upgrade()
     {
         if (_level < 10)
         {
             _level++;
         }
-    }    
+    }
     public string Info => $"Creature: {Name}, Level: {Level}";
     public void Go(Direction direction)
     {
