@@ -23,7 +23,7 @@ public static class DirectionParser
                     directions.Add(Direction.Left);
                     break;
                 default:
-                    // Ignoruj nieprawidłowe znaki
+                 
                     break;
             }
         }
