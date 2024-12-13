@@ -7,20 +7,13 @@ public abstract class Creature
     public string Name
     {
         get => _name;
-        set
-        {
-            value = value.Trim();
-            value = value.Length < 3 ? value.PadRight(3, '#') : value;
-            value = value.Length > 25 ? value.Substring(0, 25).TrimEnd() : value;
-            value = char.IsLower(value[0]) ? char.ToUpper(value[0]) + value.Substring(1) : value;
-            _name = value;
-        }
+        set => _name = Validator.Shortener(value, 3, 25);
     }
 
     public int Level
     {
         get => _level;
-        set => _level = value < 1 ? 1 : value > 10 ? 10 : value;
+        set => _level = Validator.Limiter(value, 1, 10);
     }
 
 
@@ -35,7 +28,7 @@ public abstract class Creature
     public abstract void SayHi();
     public abstract int Power { get; }
    
-
+    public abstract string Info {  get; }   
 
     public void Upgrade()
     {
@@ -44,7 +37,7 @@ public abstract class Creature
             _level++;
         }
     }
-    public string Info => $"Creature: {Name}, Level: {Level}";
+   
     public void Go(Direction direction)
     {
         Console.WriteLine($"{Name} goes {direction.ToString().ToLower()}.");
@@ -61,4 +54,11 @@ public abstract class Creature
         var directions = DirectionParser.Parse(input);
         Go(directions);
     }
+
+    public override string ToString()
+    {
+        return $"{GetType().Name.ToUpper()}: {Info}";
+    }
+
+
 }

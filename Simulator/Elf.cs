@@ -13,7 +13,7 @@ namespace Simulator;
         public int Agility
         {
             get => _agility;
-            private set => _agility = value < 0 ? 0 : value > 10 ? 10 : value;
+        set => _agility = Validator.Limiter(value, 0, 10);
         }
 
         public Elf() { }
@@ -36,5 +36,6 @@ namespace Simulator;
         }
 
         public override int Power => 8 * Level + 2 * Agility;
-    }
+    public override string Info => $"{Name.ToUpper()[0] + Name[1..].ToLower()} [{Level}][{Agility}]";
+}
 

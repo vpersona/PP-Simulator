@@ -9,12 +9,12 @@ public class Orc : Creature
     public int Rage
     {
         get => _rage;
-        set => _rage = value < 0 ? 0 : value > 10 ? 10 : value;
+        set => _rage = Validator.Limiter(value, 0, 10);
     }
     public Orc() { }
     public Orc(string name, int level = 1, int rage = 1) : base(name, level)
     {
-        _rage = rage < 0 ? 0 : rage > 10 ? 10 : rage;
+        _rage = rage;
     }
 
     public override void SayHi() => Console.WriteLine(
@@ -30,4 +30,5 @@ public class Orc : Creature
     }
 
     public override int Power => 7 * Level + 3 * _rage;
+    public override string Info => $"{Name.ToUpper()[0] + Name[1..].ToLower()} [{Level}][{Rage}]";
 }
