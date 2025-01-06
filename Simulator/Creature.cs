@@ -25,7 +25,7 @@ public abstract class Creature
     }
 
     public Creature() { }
-    public abstract void SayHi();
+    public abstract string Greeting();
     public abstract int Power { get; }
    
     public abstract string Info {  get; }   
@@ -37,22 +37,29 @@ public abstract class Creature
             _level++;
         }
     }
-   
-    public void Go(Direction direction)
+
+    public string Go(Direction direction) => $"{Name} goes {direction.ToString().ToLower()}.";
+
+
+
+    public string[] Go(Direction[] directions)
     {
-        Console.WriteLine($"{Name} goes {direction.ToString().ToLower()}.");
-    }
-    public void Go(Direction[] directions)
-    {
+        List<string> results = new List<string>();
+
         foreach (var direction in directions)
         {
-            Go(direction);
+
+            string result = Go(direction);
+            results.Add(result);
         }
+        return results.ToArray();
     }
-    public void Go(string input)
+    public string Go(string input)
     {
         var directions = DirectionParser.Parse(input);
-        Go(directions);
+        var result = Go(directions);
+
+        return string.Join(", ", result);
     }
 
     public override string ToString()

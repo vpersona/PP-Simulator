@@ -1,8 +1,9 @@
 ﻿
 using Simulator.Maps;
+using Simulator;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Simulator;
+namespace Runner;
 
 class Program
 {
