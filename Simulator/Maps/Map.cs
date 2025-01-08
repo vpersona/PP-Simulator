@@ -4,6 +4,7 @@
     {
         public int SizeX { get; }
         public int SizeY { get; }
+       
 
         protected Map(int sizeX, int sizeY)
         {
@@ -23,5 +24,7 @@
 
         public abstract Point Next(Point p, Direction d);
         public abstract Point NextDiagonal(Point p, Direction d);
+
+        
     }
 }
