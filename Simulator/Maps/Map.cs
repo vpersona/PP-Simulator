@@ -1,37 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Simulator.Maps;
-
-/// <summary>
-/// Map of points.
-/// </summary>
-public abstract class Map
+﻿namespace Simulator.Maps
 {
-    /// <summary>
-    /// Check if give point belongs to the map.
-    /// </summary>
-    /// <param name="p">Point to check.</param>
-    /// <returns></returns>
-    public abstract bool Exist(Point p);
+    public abstract class Map
+    {
+        public int SizeX { get; }
+        public int SizeY { get; }
 
-    /// <summary>
-    /// Next position to the point in a given direction.
-    /// </summary>
-    /// <param name="p">Starting point.</param>
-    /// <param name="d">Direction.</param>
-    /// <returns>Next point.</returns>
-    public abstract Point Next(Point p, Direction d);
+        protected Map(int sizeX, int sizeY)
+        {
+            if (sizeX < 5 || sizeY < 5)
+            {
+                throw new ArgumentOutOfRangeException("Minimum dimention size: 5x5");
+            }
 
-    /// <summary>
-    /// Next diagonal position to the point in a given direction 
-    /// rotated 45 degrees clockwise.
-    /// </summary>
-    /// <param name="p">Starting point.</param>
-    /// <param name="d">Direction.</param>
-    /// <returns>Next point.</returns>
-    public abstract Point NextDiagonal(Point p, Direction d);
+            SizeX = sizeX;
+            SizeY = sizeY;
+        }
+
+        public virtual bool Exist(Point p)
+        {
+            return p.X >= 0 && p.X < SizeX && p.Y >= 0 && p.Y < SizeY; // (0,0) to (SizeX - 1, SizeY -1)
+        }
+
+        public abstract Point Next(Point p, Direction d);
+        public abstract Point NextDiagonal(Point p, Direction d);
+    }
 }

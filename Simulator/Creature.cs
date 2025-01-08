@@ -56,11 +56,20 @@ public abstract class Creature
     }
     public string Go(string input)
     {
-        var directions = DirectionParser.Parse(input);
-        var result = Go(directions);
+        var directions = DirectionParser.Parse(input); 
+        var result = new List<string>();
 
-        return string.Join(", ", result);
+       
+        foreach (var direction in directions)
+        {
+            
+            var point = Go(direction); 
+            result.Add(point.ToString()); 
+        }
+
+        return string.Join(", ", result); 
     }
+
 
     public override string ToString()
     {

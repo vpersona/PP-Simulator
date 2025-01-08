@@ -8,12 +8,12 @@ public class SmallTorusMapTests
     [Fact]
     public void Constructor_ValidSize_ShouldSetSize()
     {
-        // Arrange
         int size = 10;
         // Act
         var map = new SmallTorusMap(size);
         // Assert
-        Assert.Equal(size, map.Size);
+        Assert.Equal(size, map.SizeX); 
+        Assert.Equal(size, map.SizeY);
     }
 
     [Theory]
@@ -24,7 +24,7 @@ public class SmallTorusMapTests
         (int size)
     {
         // Act & Assert
-        // The way to check if method throws anticipated exception:
+        
         Assert.Throws<ArgumentOutOfRangeException>(() =>
              new SmallTorusMap(size));
     }
