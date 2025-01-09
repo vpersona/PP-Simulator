@@ -19,7 +19,7 @@ public abstract class Creature
         set => _level = Validator.Limiter(value, 1, 10);
     }
 
-    public Point? Position { get; private set; }
+    public Point? Position { get;  set; }
     public SmallMap? CurrentMap { get; private set; }
 
     public void AssignToMap(SmallMap map, Point position)
