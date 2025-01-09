@@ -39,11 +39,12 @@ public class Simulation
     /// </summary>
     /// 
     private int currentTurn = 0;
+    private int currentCreatureIndex = 0;
     public Creature CurrentCreature
     {
         get
         {
-            return Creatures[currentTurn % Creatures.Count];
+            return Creatures[currentCreatureIndex];
         }
     }
 
@@ -57,7 +58,7 @@ public class Simulation
         get
         {
             if (Finished) throw new InvalidOperationException("Simulation has finished.");
-            return Moves[currentTurn % Moves.Length].ToString().ToLower();
+            return Moves[currentCreatureIndex].ToString().ToLower();
         }
 
         /// <summary>
@@ -83,10 +84,10 @@ public class Simulation
        if (creatures == null || creatures.Count == 0)
             throw new ArgumentException("The list of creatures cannot be empty.");
 
-        Map = map ?? throw new ArgumentNullException(nameof(map));
-        Creatures = new List<Creature>(creatures);
-        Positions = new List<Point>(positions);
-        Moves = moves.ToLower();
+        Map = map;
+        Creatures = creatures;
+        Positions = positions;
+        Moves = moves;
 
         // assign creatures to their starting positions
         for (int i = 0; i < creatures.Count; i++)
@@ -105,41 +106,33 @@ public class Simulation
         if (Finished)
             throw new InvalidOperationException("Simulation has finished.");
 
-        Creature creature = CurrentCreature;
-        string moveName = CurrentMoveName;
 
-        // getting direction form parser
-        Direction? direction = DirectionParser.Parse(moveName).FirstOrDefault();
+        var directions = DirectionParser.Parse(CurrentMoveName);
 
-       
-        if (!direction.HasValue)
+        foreach (var direction in directions)
         {
-            currentTurn++;
-            return;
+            try
+            {
+
+                CurrentCreature.Go(direction);
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Invalid turn {ex.Message}");
+            }
         }
 
-        // creature current position
-        Point currentPosition = creature.Position.Value;
 
-        // next creature position
-        Point nextPosition = Map.Next(currentPosition, direction.Value);
+        currentCreatureIndex++;
 
-        // make a move on the map
-        if (Map.Exist(nextPosition))
+
+        if (currentCreatureIndex >= Creatures.Count)
         {
-            ((SmallMap)Map).Move(creature, nextPosition);
-            creature.Position = nextPosition;
-        }
-
-        
-        currentTurn++;
-
-        // check if all the moves are finished 
-        if (currentTurn >= Moves.Length * Creatures.Count)
-        {
-            Finished = true;
+            currentCreatureIndex = 0;
         }
     }
-
 }
+
+
 

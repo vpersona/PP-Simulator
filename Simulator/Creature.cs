@@ -19,23 +19,23 @@ public abstract class Creature
         set => _level = Validator.Limiter(value, 1, 10);
     }
 
-    public Point? Position { get;  set; }
-    public SmallMap? CurrentMap { get; private set; }
+    public Point CurrentPosition { get; private set; }
+    public Map? CurrentMap { get; private set; }
 
-    public void AssignToMap(SmallMap map, Point position)
+    public void AssignToMap(Map map, Point position)
     {
         if (map == null) throw new ArgumentNullException(nameof(map));
         if (!map.Exist(position)) throw new ArgumentOutOfRangeException("Position is out of map bounds.");
 
         CurrentMap = map;
-        Position = position;
+        CurrentPosition = position;
         map.Add(this, position);
     }
 
- 
 
 
-        protected Creature(string name, int level = 1)
+
+    protected Creature(string name, int level = 1)
     {
         Name = name;
         Level = level;
@@ -44,8 +44,8 @@ public abstract class Creature
     public Creature() { }
     public abstract string Greeting();
     public abstract int Power { get; }
-   
-    public abstract string Info {  get; }   
+
+    public abstract string Info { get; }
 
     public void Upgrade()
     {
@@ -57,14 +57,25 @@ public abstract class Creature
 
     public void Go(Direction direction)
     {
-        if (CurrentMap == null || Position == null)
+        if (CurrentMap == null)
         {
             throw new InvalidOperationException("Creature is not assigned to a map or position.");
         }
 
-        var newPosition = Position.Value.Next(direction);
-        CurrentMap.Move(this, newPosition);
-        Position = newPosition;
+        Point newPosition = CurrentMap.Next(CurrentPosition, direction);
+        MoveTo(newPosition);
+    }
+
+    private void MoveTo(Point newPosition)
+    {
+        if (CurrentMap == null)
+            throw new InvalidOperationException("Creature is not assigned to a map or position.");
+
+        CurrentMap.Remove(this, CurrentPosition);
+
+        CurrentMap.Add(this, newPosition);
+
+        CurrentPosition = newPosition;
     }
 
 
