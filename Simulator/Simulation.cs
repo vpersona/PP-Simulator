@@ -13,7 +13,7 @@ public class Simulation
     /// <summary>
     /// Creatures moving on the map.
     /// </summary>
-    public List<Creature> Creatures { get; }
+    public List<IMappable> Mappables { get; }
 
     /// <summary>
     /// Starting positions of creatures.
@@ -39,12 +39,12 @@ public class Simulation
     /// </summary>
     /// 
     private int currentTurn = 0;
-    private int currentCreatureIndex = 0;
-    public Creature CurrentCreature
+    private int currentMappableIndex = 0;
+    public IMappable CurrentMappable
     {
         get
         {
-            return Creatures[currentCreatureIndex];
+            return Mappables[currentMappableIndex];
         }
     }
 
@@ -58,7 +58,7 @@ public class Simulation
         get
         {
             if (Finished) throw new InvalidOperationException("Simulation has finished.");
-            return Moves[currentCreatureIndex].ToString().ToLower();
+            return Moves[currentMappableIndex].ToString().ToLower();
         }
 
         /// <summary>
@@ -71,28 +71,28 @@ public class Simulation
         /// 
 
     }
-    public Simulation(Map map, List<Creature> creatures,
+    public Simulation(Map map, List<IMappable> mappables,
             List<Point> positions, string moves)
     {
         if (string.IsNullOrEmpty(moves))
             throw new ArgumentException("Moves cannot be null or empty.");
 
-        if (positions == null || creatures.Count != positions.Count)
+        if (positions == null || mappables.Count != positions.Count)
             throw new ArgumentException("The number of creatures must match the number of starting positions.");
 
         
-       if (creatures == null || creatures.Count == 0)
+       if (mappables == null || mappables.Count == 0)
             throw new ArgumentException("The list of creatures cannot be empty.");
 
         Map = map;
-        Creatures = creatures;
+        Mappables = mappables;
         Positions = positions;
         Moves = moves;
 
         // assign creatures to their starting positions
-        for (int i = 0; i < creatures.Count; i++)
+        for (int i = 0; i < mappables.Count; i++)
         {
-            creatures[i].AssignToMap((SmallMap)Map, positions[i]);
+            mappables[i].AssignToMap((SmallMap)Map, positions[i]);
         }
     }
 
@@ -114,7 +114,7 @@ public class Simulation
             try
             {
 
-                CurrentCreature.Go(direction);
+                CurrentMappable.Go(direction);
             }
             catch (Exception ex)
             {
@@ -124,12 +124,12 @@ public class Simulation
         }
 
 
-        currentCreatureIndex++;
+        currentMappableIndex++;
 
 
-        if (currentCreatureIndex >= Creatures.Count)
+        if (currentMappableIndex >= Mappables.Count)
         {
-            currentCreatureIndex = 0;
+            currentMappableIndex = 0;
         }
     }
 }

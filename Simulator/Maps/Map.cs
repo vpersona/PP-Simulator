@@ -5,8 +5,8 @@
         public int SizeX { get; }
         public int SizeY { get; }
         public readonly Rectangle mapArea;
-        public abstract void Remove(Creature creature, Point point);
-        public abstract void Add(Creature creature, Point point);
+        public abstract void Remove(IMappable obj, Point point);
+        public abstract void Add(IMappable obj, Point point);
         protected Map(int sizeX, int sizeY)
         {
             if (sizeX < 5 || sizeY < 5)
@@ -19,7 +19,7 @@
 
             mapArea = new Rectangle(0, 0, SizeX - 1, SizeY - 1);
         }
-        public void Move(Creature creature, Point position, Point nextposition)
+        public void Move(IMappable obj, Point position, Point nextposition)
         {
             if (!mapArea.Contains(position) || !mapArea.Contains(nextposition))
             {
@@ -27,13 +27,13 @@
             }
 
 
-            Remove(creature, position);
-            Add(creature, nextposition);
+            Remove(obj, position);
+            Add(obj, nextposition);
         }
 
-        public abstract List<Creature> At(Point point);
+        public abstract List<IMappable> At(Point point);
 
-        public abstract List<Creature> At(int x, int y);
+        public abstract List<IMappable> At(int x, int y);
         public virtual bool Exist(Point p)
         {
             return mapArea.Contains(p); 

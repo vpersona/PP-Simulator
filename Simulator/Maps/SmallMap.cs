@@ -2,7 +2,7 @@
 
 public abstract class SmallMap : Map
 {
-    private readonly List<Creature>?[,] tiles;
+    private readonly List<IMappable>?[,] tiles;
     public SmallMap(int sizeX, int sizeY) : base(sizeX, sizeY)
     {
         if (sizeX > 20 || sizeY > 20)
@@ -10,40 +10,40 @@ public abstract class SmallMap : Map
             throw new ArgumentOutOfRangeException("Maximum dimensions size : 20x20");
 
         }
-        tiles = new List<Creature>[sizeX, sizeY];
+        tiles = new List<IMappable>[sizeX, sizeY];
     }
 
-    public override void Add(Creature creature, Point position)
+    public override void Add(IMappable obj, Point position)
     {
         if (!Exist(position))
             throw new ArgumentOutOfRangeException("Position is out of map bounds.");
 
         if (tiles[position.X, position.Y] == null)
         {
-            tiles[position.X, position.Y] = new List<Creature>();
+            tiles[position.X, position.Y] = new List<IMappable>();
         }
-        tiles[position.X, position.Y].Add(creature);
+        tiles[position.X, position.Y].Add(obj);
     }
     
 
 
-    public override void Remove(Creature creature, Point position)
+    public override void Remove(IMappable obj, Point position)
     {
         var CreaturesAtPoint = tiles[position.X, position.Y];
         if (CreaturesAtPoint != null)
         {
-            CreaturesAtPoint.Remove(creature);
+            CreaturesAtPoint.Remove(obj);
         }
     }
 
-    public override List<Creature> At(Point position)
+    public override List<IMappable> At(Point position)
     {
 
 
-        return tiles[position.X, position.Y] ?? new List<Creature>();
+        return tiles[position.X, position.Y] ?? new List<IMappable>();
     }
 
-    public override List<Creature> At(int x, int y)
+    public override List<IMappable> At(int x, int y)
     {
         return At(new Point(x, y));
     }

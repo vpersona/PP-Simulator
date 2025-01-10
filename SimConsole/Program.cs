@@ -13,11 +13,11 @@ namespace SimConsole
 
 
             SmallSquareMap map = new(5);
-            List<Creature> creatures = [new Orc("Gorbag"), new Elf("Elandor")];
+            List<IMappable> mappables = [new Orc("Gorbag"), new Elf("Elandor")];
             List<Point> points = [new(2,2), new(3, 1)];
             string moves = "dlrludl";
 
-            Simulation simulation = new(map, creatures, points, moves);
+            Simulation simulation = new(map, mappables, points, moves);
             MapVisualizer mapVisualizer = new(simulation.Map);
 
             mapVisualizer.Draw();
@@ -28,7 +28,7 @@ namespace SimConsole
                 Console.ReadKey();  
 
                 Console.WriteLine($"\nTurn: {turn}");
-                Console.WriteLine($"{simulation.CurrentCreature} {simulation.CurrentCreature.CurrentPosition} goes {simulation.CurrentMoveName}:");             
+                Console.WriteLine($"{simulation.CurrentMappable} {simulation.CurrentMappable.CurrentPosition} goes {simulation.CurrentMoveName}:");             
                 simulation.Turn();
                 
                 mapVisualizer.Draw();                
