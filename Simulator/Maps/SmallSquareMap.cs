@@ -2,7 +2,7 @@
 
 public class SmallSquareMap : SmallMap
 {
-    public SmallSquareMap(int size) : base(size, size) { }
+    public SmallSquareMap(int sizeX, int sizeY) : base(sizeX, sizeY) { }
 
     public override Point Next(Point p, Direction d)
     {

@@ -19,6 +19,9 @@ public abstract class Creature : IMappable
         set => _level = Validator.Limiter(value, 1, 10);
     }
 
+
+    public virtual string Symbol => "C";
+
     public Point CurrentPosition { get; private set; }
     public Map? CurrentMap { get; private set; }
 

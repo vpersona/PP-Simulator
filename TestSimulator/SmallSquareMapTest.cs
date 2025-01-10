@@ -12,8 +12,8 @@ namespace Simulator.Tests
 
         public SmallSquareMapTests()
         {
-            // Tworzymy mapę o rozmiarze 10x10
-            map = new SmallSquareMap(10);
+            // CREATING A 10 x 10 MAP
+            map = new SmallSquareMap(10,10);
         }
 
         [Fact]
@@ -84,8 +84,8 @@ namespace Simulator.Tests
         public void Test_Constructor_ShouldThrowExceptionForInvalidSize()
         {
             // chceck if Constructor throws exception for the wrong size
-            Assert.Throws<ArgumentOutOfRangeException>(() => new SmallSquareMap(4));
-            Assert.Throws<ArgumentOutOfRangeException>(() => new SmallSquareMap(21));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new SmallSquareMap(4,5));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new SmallSquareMap(21,7));
         }
 
         [Fact]
