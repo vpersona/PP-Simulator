@@ -1,0 +1,76 @@
+﻿@page
+@model SimWeb.Pages.SimulationModel
+@{
+    ViewData["Title"] = "Simulation";
+}
+
+
+<header class="main-header">
+    <div class="header-content">
+        <div class="logo">
+            <a asp-page="/Index">SimWeb</a>
+        </div>
+        <nav class="nav-links">
+            <a asp-page="/Info">Info</a>
+        </nav>
+    </div>
+</header>
+
+<div>
+
+    <!-- turn number -->
+    <h3>Turn: @Model._currentTurn</h3> 
+
+    <div class="map-container">
+        
+
+
+        <div class="map">
+            @for (int y = 0; y < 6; y++)
+            {
+                <!-- rows numbers -->
+                <div class="row">
+                    <div class="row-number">@y</div>
+                    @for (int x = 0; x < 8; x++)
+                    {
+                        <div class="cell">
+                            @Html.Raw(Model.GetCellContent(x, y)) 
+                        </div>
+                    }
+                </div>
+                
+            }
+            
+            
+        </div>
+         <!--columns numbers -->
+    <div class="column-numbers">
+        @for (int x = 0; x < 8; x++)
+        {
+            <div class="column-number">@x</div>
+        }
+    </div>
+        
+    </div>
+
+</div>
+<div class="turn-controls">
+    <!-- Previous Turn Button -->
+    <form method="post" asp-page-handler="PreviousTurn" class="next-turn-form">
+        <button type="submit" class="btn btn-secondary">Previous Turn</button>
+    </form>
+
+    <!-- Next Turn Button -->
+    <form method="post" asp-page-handler="NextTurn" class="next-turn-form">
+        <button type="submit" class="btn btn-primary">Next Turn</button>
+    </form>
+</div>
+
+
+@if (Model._simulation.Finished)
+{
+    <div>
+        <h4>Simulation Finished!</h4>
+    </div>
+}
+}

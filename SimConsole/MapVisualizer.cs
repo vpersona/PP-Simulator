@@ -39,19 +39,19 @@ public class MapVisualizer
             for (int x = 0; x < width; x++)
             {
                 Simulator.Point point = new Simulator.Point(x, y);
-                var objects = _map.At(point); 
+                var objects = _map.At(point);
 
                 if (objects?.Count > 1)
-                {                  
+                {
                     Console.Write("X");
                 }
                 else if (objects?.Count == 1)
-                {                    
+                {
                     var symbol = objects[0] is IMappable mappable ? mappable.Symbol : " ";
                     Console.Write(symbol);
                 }
                 else
-                {                 
+                {
                     Console.Write(" ");
                 }
                 // grid separator
@@ -82,4 +82,3 @@ public class MapVisualizer
         Console.WriteLine(Box.BottomRight);
     }
 }
-

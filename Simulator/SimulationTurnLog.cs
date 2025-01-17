@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simulator.Maps;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,18 +12,10 @@ namespace Simulator;
 /// </summary>
 public class SimulationTurnLog
 {
-    /// <summary>
-    /// Text representastion of moving object in this turn.
-    /// CurrentMappable.ToString()
-    /// </summary>
+    public List<Point> Positions { get; set; } 
+    public Dictionary<Point, List<IMappable>> CreaturePositions { get; set; } = new();
+    public int TurnId { get; set; }
     public required string Mappable { get; init; }
-    /// <summary>
-    /// Text representation of move in this turn.
-    /// CurrentMoveName.ToString();
-    /// </summary>
     public required string Move { get; init; }
-    /// <summary>
-    /// Dictionary of IMappable.Symbol on the map in this turn.
-    /// </summary>
-    public required Dictionary<Point, char> Symbols { get; init; }
+    public Dictionary<Point, char> Symbols { get; init; }
 }

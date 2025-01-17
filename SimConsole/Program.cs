@@ -43,7 +43,7 @@ namespace SimConsole
                 Console.ReadKey();  
 
                 Console.WriteLine($"\nTurn: {turn}");
-                Console.WriteLine($"{simulation.CurrentMappable} {simulation.CurrentMappable.CurrentPosition} goes {simulation.CurrentMoveName}:");             
+                            
                 simulation.Turn();
                 
                 mapVisualizer.Draw();                

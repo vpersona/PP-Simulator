@@ -7,6 +7,11 @@
         public readonly Rectangle mapArea;
         public abstract void Remove(IMappable obj, Point point);
         public abstract void Add(IMappable obj, Point point);
+        private readonly Dictionary<Point, List<IMappable>> _mapData;
+        public void Clear()
+        {
+            _mapData.Clear();  
+        }
         protected Map(int sizeX, int sizeY)
         {
             if (sizeX < 5 || sizeY < 5)

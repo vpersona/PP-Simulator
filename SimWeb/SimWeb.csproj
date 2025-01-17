@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\lib\bootstrap\**" />
+    <Content Remove="wwwroot\lib\bootstrap\**" />
+    <EmbeddedResource Remove="wwwroot\lib\bootstrap\**" />
+    <None Remove="wwwroot\lib\bootstrap\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Runner\Runner.csproj" />
+    <ProjectReference Include="..\SimConsole\SimConsole.csproj" />
+    <ProjectReference Include="..\Simulator\Simulator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+  </ItemGroup>
+
+</Project>

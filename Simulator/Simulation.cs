@@ -1,10 +1,9 @@
 ﻿using Simulator.Maps;
-
-
-namespace Simulator;
+using Simulator;
 
 public class Simulation
 {
+
     /// <summary>
     /// Simulation's map.
     /// </summary>
@@ -18,8 +17,18 @@ public class Simulation
     /// <summary>
     /// Starting positions of creatures.
     /// </summary>
-    public List<Point> Positions { get; }
+    public List<Point> Positions { get; private set; }
+    public Simulation _simulation { get; set; }
 
+    
+    public void SetPositions(List<Point> newPositions)
+    {
+        if (newPositions == null || newPositions.Count != Positions.Count)
+            throw new ArgumentException("The number of positions must match the number of creatures.");
+
+        
+        Positions = newPositions;
+    }
     /// <summary>
     /// Cyclic list of creatures moves. 
     /// Bad moves are ignored - use DirectionParser.
@@ -37,9 +46,12 @@ public class Simulation
     /// <summary>
     /// Creature which will be moving current turn.
     /// </summary>
-    /// 
     private int currentTurn = 0;
     private int currentMappableIndex = 0;
+
+    
+    private SimulationHistory _history;
+
     public IMappable CurrentMappable
     {
         get
@@ -48,11 +60,10 @@ public class Simulation
         }
     }
 
+
     /// <summary>
     /// Lowercase name of direction which will be used in current turn.
     /// </summary>
-
-
     public string CurrentMoveName
     {
         get
@@ -60,17 +71,8 @@ public class Simulation
             if (Finished) throw new InvalidOperationException("Simulation has finished.");
             return Moves[currentMappableIndex].ToString().ToLower();
         }
-
-        /// <summary>
-        /// Simulation constructor.
-        /// Throw errors:
-        /// if creatures' list is empty,
-        /// if number of creatures differs from 
-        /// number of starting positions.
-        /// </summary>
-        /// 
-
     }
+
     public Simulation(Map map, List<IMappable> mappables,
             List<Point> positions, string moves)
     {
@@ -80,8 +82,7 @@ public class Simulation
         if (positions == null || mappables.Count != positions.Count)
             throw new ArgumentException("The number of creatures must match the number of starting positions.");
 
-        
-       if (mappables == null || mappables.Count == 0)
+        if (mappables == null || mappables.Count == 0)
             throw new ArgumentException("The list of creatures cannot be empty.");
 
         Map = map;
@@ -89,12 +90,20 @@ public class Simulation
         Positions = positions;
         Moves = moves;
 
-        // assign creatures to their starting positions
+        
+        _history = new SimulationHistory(this);
+
+        // assign creatures to the starting positions
         for (int i = 0; i < mappables.Count; i++)
         {
             mappables[i].AssignToMap((SmallMap)Map, positions[i]);
         }
     }
+
+
+
+
+
 
 
     /// <summary>
@@ -106,33 +115,29 @@ public class Simulation
         if (Finished)
             throw new InvalidOperationException("Simulation has finished.");
 
-
         var directions = DirectionParser.Parse(CurrentMoveName);
 
         foreach (var direction in directions)
         {
             try
             {
-
-                CurrentMappable.Go(direction);
+                CurrentMappable.Go(direction);  // make a move
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine($"Invalid turn {ex.Message}");
             }
         }
 
 
+
+        
         currentMappableIndex++;
 
-
+        
         if (currentMappableIndex >= Mappables.Count)
         {
             currentMappableIndex = 0;
         }
     }
 }
-
-
-
